@@ -5,6 +5,7 @@ from fileinput import close
 import serial
 
 #file = open('../grass.txt','r')
+Port=input('Port: ')
 text = input('Word: ')
 #file.read()
 decode = ''
@@ -43,7 +44,7 @@ else:
 def send_data(data):
     try:
         # Попробуем открыть неверный порт
-        ser = serial.Serial('COM9', 9600)  # Укажи свой порт
+        ser = serial.Serial(Port, 9600)  # Укажи свой порт
         print("Порт открыт успешно!")
     except serial.SerialException:
         input("INVALID PORT")
