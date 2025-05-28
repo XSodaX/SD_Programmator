@@ -4,25 +4,20 @@ from fileinput import close
 
 import serial
 
-Port=input('Port: ')
-text = input('Word: ')
+with open('./Settings.txt','r') as file:
+    Settings = file.read().splitlines()
+
+PORT = str(Settings[0])
+throughput = int(Settings[1])
+Memory = int(Settings[2])
+
 decode = ''
 char = ''
 charMass = []
 Error = 'Application Shutdown...'
-throughput = 0.1
-Memory = input('Memory (Defult 128Bit): ')
-try:
-    if Memory=='':
-        Memory=128
-    else:
-        Memory = int(Memory)
-except ValueError:
-    input('Incorrect value')
-    sys.exit(Error)
 
-if Port=='':
-    Port='COM9'
+text = input('Word: ')
+
 
 for i in range(len(text)):
     char=(format(ord(text[i]), 'b'))
@@ -40,13 +35,13 @@ if Memory < MemoryUse:
     sys.exit(Error)
 else:
     print('The data takes up ', MemoryUse / Memory * 100, '% of the memory')
-    print('All time:', round(MemoryUse*throughput, 2), 'sec')
+    print('All time:', round(MemoryUse / throughput, 2), 'sec')
 
 def send_data(data):
     try:
         # Попробуем открыть неверный порт
-        ser = serial.Serial(Port, 9600)  # Укажи свой порт
-        print("Connection complete")
+        ser = serial.Serial(PORT, 9600)  # Укажи свой порт
+        print("Порт открыт успешно!")
     except serial.SerialException:
         input("INVALID PORT")
         sys.exit(Error)
