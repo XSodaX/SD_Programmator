@@ -4,14 +4,13 @@ from fileinput import close
 
 import serial
 
-#file = open('../grass.txt','r')
 Port=input('Port: ')
 text = input('Word: ')
-#file.read()
 decode = ''
 char = ''
 charMass = []
 Error = 'Application Shutdown...'
+throughput = 0.1
 Memory = input('Memory (Defult 128Bit): ')
 try:
     if Memory=='':
@@ -19,10 +18,12 @@ try:
     else:
         Memory = int(Memory)
 except ValueError:
-    input('Press ENTER to close programm')
+    input('Incorrect value')
     sys.exit(Error)
 
-throughput = 0.1
+if Port=='':
+    Port='COM9'
+
 for i in range(len(text)):
     char=(format(ord(text[i]), 'b'))
     charMass.append(char.zfill(8))
@@ -45,7 +46,7 @@ def send_data(data):
     try:
         # Попробуем открыть неверный порт
         ser = serial.Serial(Port, 9600)  # Укажи свой порт
-        print("Порт открыт успешно!")
+        print("Connection complete")
     except serial.SerialException:
         input("INVALID PORT")
         sys.exit(Error)
